@@ -42,4 +42,4 @@ Users.init(
   }
 );
 
-module.exports = Comments;
+module.exports = Users;
