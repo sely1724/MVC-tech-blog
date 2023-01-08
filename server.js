@@ -8,8 +8,8 @@ const helpers = require("./utils/helpers");
 const sequelize = require("./config/connection");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+const app = express(); //g2g
+const PORT = process.env.PORT || 3001; //g2g
 
 const hbs = exphbs.create({ helpers });
 
@@ -25,8 +25,8 @@ const sess = {
 
 app.use(session(sess));
 
-app.engine("handlebars", hbs.engine);
-app.set("view engine", "handlebars");
+app.engine("handlebars", hbs.engine); //g2g
+app.set("view engine", "handlebars"); //g2g
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
