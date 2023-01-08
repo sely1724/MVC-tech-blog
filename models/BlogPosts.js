@@ -22,8 +22,8 @@ BlogPosts.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    date: {
-      type: DataTypes.DATE,
+    notes: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
