@@ -1,40 +1,21 @@
 const router = require("express").Router();
-const { User } = require("../../models/User");
+const { Users } = require("../../models/");
+const bcrypt = require("bcrypt");
 
-router.post("/login", async (req, res) => {
+//create new user
+
+router.post("/", async (req, res) => {
+  Users.create({
+    username: req.body.username,
+    password: req.body.password,
+  });
   try {
-    const userData = await User.findOne({ where: { email: req.body.email } });
-
-    if (!userData) {
-      res.status(400).json({ message: "Incorrect username, please try again" });
-      return;
-    }
-
-    const validPassword = await userData.checkPassword(req.body.password);
-
-    if (!validPassword) {
-      res.status(400).json({ message: "Incorrect password, please try again" });
-      return;
-    }
-
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-
-      res.json({ user: userData, message: "You are now logged in!" });
-    });
+    (newUser) => {
+      res.json(newUser);
+    };
   } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-router.post("/logout", (req, res) => {
-  if (req.session.logged_in) {
-    req.session.destroy(() => {
-      res.status(204).end();
-    });
-  } else {
-    res.status(404).end();
+    console.log(err);
+    res.status(500).json(err);
   }
 });
 
