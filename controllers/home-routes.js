@@ -46,10 +46,6 @@ router.get("/dashboard", async (req, res) => {
           model: Users,
           attributes: ["username"], // include username, date? tbd
         },
-        {
-          model: Comments,
-          attributes: [""], // include username tbd?
-        },
       ],
     });
 

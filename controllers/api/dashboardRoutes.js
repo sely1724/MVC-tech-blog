@@ -2,9 +2,18 @@
 
 const express = require("express");
 const router = express.Router();
-const { Users, BlogPosts, Comments } = require("../../models");
+const { Users, BlogPosts } = require("../../models");
 
-// GET one blog post
+// get dashboard - unique post - includes comments
+// /dashboard/:id
+
+// create new post
+// /dashboard/new-post
+
+// click thru on dashboard?
+
+// we need a route for adding a comment. POST?
+
 router.get("/:id", async (req, res) => {
   try {
     const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
@@ -13,6 +22,8 @@ router.get("/:id", async (req, res) => {
           model: Comments,
           attributes: ["id", "user-id", "comment"],
         },
+
+        //where user id =
       ],
     });
 

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Users } = require("../../models/");
+const { Users } = require("../../models");
 //const bcrypt = require("bcrypt");
 
 //create new user
