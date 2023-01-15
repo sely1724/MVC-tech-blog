@@ -19,7 +19,8 @@ router.get("/", async (req, res) => {
     const blogDisplay = blogData.map((blog) => blog.get({ plain: true }));
     // Send blogDisplay information to the 'homepage' template
     res.render("homepage", {
-      blogDisplay,
+      blogs: blogDisplay,
+      username: req.session.username,
     });
   } catch (err) {
     console.log(err);
@@ -69,9 +70,9 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.render("logout");
-});
+// router.get("/logout", (req, res) => {
+//   req.session.destroy();
+//   res.render("logout");
+// });
 
 module.exports = router;
