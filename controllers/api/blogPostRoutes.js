@@ -4,26 +4,26 @@ const express = require("express");
 const router = express.Router();
 const { Users, BlogPosts, Comments } = require("../../models");
 
-// GET one blog post
-router.get("/:id", async (req, res) => {
-  try {
-    const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
-      include: [
-        {
-          model: Comments,
-          attributes: ["id", "user_id", "comment"],
-        },
-      ],
-    });
+// // GET one blog post -- We ended up doing this from home-routes
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
+//       include: [
+//         {
+//           model: Comments,
+//           attributes: ["id", "user_id", "comment"],
+//         },
+//       ],
+//     });
 
-    const singlePost = dbSinglePost.get({ plain: true });
-    // Send over the 'loggedIn' session variable to the 'homepage' template
-    res.render("post", { singlePost, loggedIn: req.session.loggedIn });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+//     const singlePost = dbSinglePost.get({ plain: true });
+//     // Send over the 'loggedIn' session variable to the 'homepage' template
+//     res.render("post", { singlePost, loggedIn: req.session.loggedIn });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// });
 
 // option to add comments.
 // post /:id

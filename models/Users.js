@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
 const sequelize = require("../config/connection");
 
 class Users extends Model {
@@ -23,7 +24,7 @@ Users.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, 25],
+        // len: [6, 25],
       },
     },
   },
@@ -35,7 +36,7 @@ Users.init(
       },
     },
     sequelize,
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true,
     underscored: true,
     modelName: "Users",

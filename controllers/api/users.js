@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const { Users } = require("../../models");
-//const bcrypt = require("bcrypt");
 
 //create new user
 router.post("/", async (req, res) => {
@@ -26,33 +25,33 @@ router.post("/login", async (req, res) => {
   try {
     const dbUserData = await Users.findOne({
       where: {
-        email: req.body.email,
+        username: req.body.username,
       },
     });
 
     if (!dbUserData) {
       res.status(400).json({
-        message: "Email not found.  Please re-enter or create a new account",
+        message: "Username not found.  Please re-enter or create a new account",
       });
       return;
     }
-
     const validPassword = await dbUserData.checkPassword(req.body.password);
 
     if (!validPassword) {
       res
         .status(400)
-        .json({ message: "Incorrect email or password. Please try again!" });
+        .json({ message: "Incorrect password. Please try again!" });
       return;
     }
+    console.log(dbUserData);
 
     // Once the user successfully logs in, set up the sessions variable 'loggedIn'
     req.session.save(() => {
       req.session.loggedIn = true;
-
-      res
-        .status(200)
-        .json({ user: dbUserData, message: "You are now logged in!" });
+      req.session.username = dbUserData.username;
+      req.session.userId = dbUserData.id;
+      res.status(200).json({ message: "You are now logged in!" });
+      //console.log("ok");
     });
   } catch (err) {
     console.log(err);

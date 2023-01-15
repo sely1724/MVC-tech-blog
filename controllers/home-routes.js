@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // require in models
+const withAuth = require("../utils/withAuth");
 const { BlogPosts, Comments, Users } = require("../models");
 
 // GET all blog posts for homepage
@@ -20,6 +21,7 @@ router.get("/", async (req, res) => {
     // Send blogDisplay information to the 'homepage' template
     res.render("homepage", {
       blogs: blogDisplay,
+      loggedIn: req.session.loggedIn,
     });
   } catch (err) {
     console.log(err);
@@ -47,6 +49,7 @@ router.get("/blog/:id", async (req, res) => {
     //     // Send over the 'loggedIn' session variable to the 'homepage' template
     res.render("single-post", {
       blog: singlePost,
+      loggedIn: req.session.loggedIn,
       //       // loggedIn: req.session.loggedIn,
       //       // pass thru comments too?
     });
@@ -57,17 +60,17 @@ router.get("/blog/:id", async (req, res) => {
 });
 
 // GET DASHBOARD - have to login to have dashboard
-router.get("/dashboard", async (req, res) => {
+router.get("/dashboard", withAuth, async (req, res) => {
   try {
     // don't think this is actually necessary because we can use a helper here??
     // so when we go to render to handlebars, a helper will run 1st to double check user login = true
 
-    // if (!req.session.user) {
-    //   return res.redirect("/login");
-    // }
+    if (!req.session.loggedIn) {
+      return res.redirect("/login");
+    }
     const dbDashboard = await BlogPosts.findAll({
       where: {
-        user_id: req.session.users.id, //TODO set up session.user obj in user routes
+        user_id: req.session.userId, //TODO set up session.user obj in user routes
       },
 
       include: [
@@ -78,7 +81,8 @@ router.get("/dashboard", async (req, res) => {
       ],
     });
 
-    const dashboard = dbDashboard.get({ plain: true });
+    const dashboard = dbDashboard.map((myPost) => myPost.get({ plain: true }));
+    console.log(req.session.loggedIn);
     // Send over the 'loggedIn' session variable to the 'homepage' template
     res.render("dashboard", { dashboard, loggedIn: req.session.loggedIn });
   } catch (err) {
