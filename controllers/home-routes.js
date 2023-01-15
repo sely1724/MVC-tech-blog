@@ -20,7 +20,35 @@ router.get("/", async (req, res) => {
     // Send blogDisplay information to the 'homepage' template
     res.render("homepage", {
       blogs: blogDisplay,
-      username: req.session.username,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// // GET single blog post for homepage -- login check required.
+router.get("/blog/:id", async (req, res) => {
+  try {
+    // todo: add in login check helper
+    const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
+      include: [
+        {
+          model: Comments,
+          attributes: ["id", "user_id", "comment"],
+        },
+        {
+          model: Users,
+          attributes: ["id", "username"],
+        },
+      ],
+    });
+    const singlePost = dbSinglePost.get({ plain: true });
+    //     // Send over the 'loggedIn' session variable to the 'homepage' template
+    res.render("single-post", {
+      blog: singlePost,
+      //       // loggedIn: req.session.loggedIn,
+      //       // pass thru comments too?
     });
   } catch (err) {
     console.log(err);

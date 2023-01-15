@@ -1,0 +1,17 @@
+<section class="container">
+  <h3 class="title">{{BlogPost.title}}</h3>
+  <h4>Notes: {{BlogPost.notes}}</h4>
+  <!-- If the user is logged in, render the gallery content -->
+  {{#if loggedIn}}
+  <section class="flex-row justify-center">
+    {{!-- {{#each BlogPost.comments as |comment|}}
+    {{> comment-details}}
+    {{/each}} --}}
+
+    <p> is it working??!</p>
+  </section>
+</section>
+<!-- Otherwise, provide a link to login -->
+{{else}}
+<a href="/login">You must login to view an individual post</a>
+{{/if}}
