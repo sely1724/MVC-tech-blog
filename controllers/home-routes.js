@@ -62,17 +62,15 @@ router.get("/blog/:id", async (req, res) => {
 // GET DASHBOARD - have to login to have dashboard
 router.get("/dashboard", withAuth, async (req, res) => {
   try {
-    const dbDashboard = await BlogPosts.findAll({
-      // where: {
-      //   user_id: req.session.userId, //TODO set up session.user obj in user routes
-      // },
+    const userData = await Users.findByPk(req.session.userId, {
+      include: [{ model: BlogPosts }],
     });
-
-    const dashboard = dbDashboard.map((myPost) => myPost.get({ plain: true }));
+    userData.get({ plain: true });
     console.log(req.session.loggedIn);
-    // Send over the 'loggedIn' session variable to the 'homepage' template
+    // Send over the 'loggedIn' session variable to the 'dashboard' template
     res.render("dashboard", {
-      blog: dashboard,
+      blog: userData,
+      loggedIn: req.session.loggedIn,
     });
   } catch (err) {
     console.log(err);
@@ -90,10 +88,5 @@ router.get("/login", (req, res) => {
   // Otherwise, render the 'login' template
   res.render("login");
 });
-
-// router.get("/logout", (req, res) => {
-//   req.session.destroy();
-//   res.render("logout");
-// });
 
 module.exports = router;

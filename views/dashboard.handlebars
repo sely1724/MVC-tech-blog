@@ -1,5 +1,5 @@
 <section class="container">
-  <h3 class="title">Your Dashboard</h3>
+  <h3 class="title">{{username}}'s Dashboard</h3>
   
 
   <h4>Post a Blog</h4>
@@ -15,6 +15,31 @@
 
     <p> DASHBOARD CHECK CHECK CHECK!!!</p>
   </section>
+
+
+{{#if blogs.length}}
+  <div class="col-md-6 blog-list">
+    <h3>All Your Blogs:</h3>
+
+{{#each blogs as |blog|}}
+{{> blog-details }}
+{{/each}}
+  </div>
+{{/if}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </section>
 
 <script src="/js/dashboard.js"></script>

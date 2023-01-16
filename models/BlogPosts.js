@@ -11,13 +11,6 @@ BlogPosts.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Users",
-        key: "id",
-      },
-    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -25,6 +18,13 @@ BlogPosts.init(
     notes: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
     },
   },
   {
