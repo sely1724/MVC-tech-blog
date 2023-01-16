@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const withAuth = require("../../utils/withAuth");
-const { BlogPosts, Users, Comments } = require("../../models");
+const { BlogPosts, Users } = require("../../models");
 
-router.post("/", withAuth, async (req, res) => {
+router.post("/post", withAuth, async (req, res) => {
   try {
     const dbBlogPost = await BlogPosts.create({
       title: req.body.title,
@@ -16,6 +16,19 @@ router.post("/", withAuth, async (req, res) => {
   }
 });
 
+// // create a new category
+// router.post("/", async (req, res) => {
+//   try {
+//     const newCategory = Category.create({
+//       //id not needed because auto-increment.
+//       category_name: req.body.category_name,
+//     });
+//     res.status(200).json(newCategory);
+//   } catch (err) {
+//     res.status(400).json(err);
+//   }
+// });
+
 // get single post
 router.get("/:id", async (req, res) => {
   try {
@@ -26,27 +39,26 @@ router.get("/:id", async (req, res) => {
       include: [Users], //eventually include COMMENTS
     });
 
-    //connect to handlebars
     res.status(200).json(singlePost);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.put("/:id", async (req, res) => {
-  try {
-    const updatePost = await BlogPosts.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
+// router.put("/:id", async (req, res) => {
+//   try {
+//     const updatePost = await BlogPosts.update(req.body, {
+//       where: {
+//         id: req.params.id,
+//       },
 
-      //how to finish update?????
-    });
-    res.status(200).json(updatePost);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+//       //how to finish update?????
+//     });
+//     res.status(200).json(updatePost);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
 
 // delete route by specific id.
 router.delete("/:id", async (req, res) => {
