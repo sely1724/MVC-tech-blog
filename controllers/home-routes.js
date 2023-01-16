@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
 // // GET single blog post for homepage -- login check required.
 router.get("/blog/:id", async (req, res) => {
   try {
-    // todo: add in login check helper
+    // todo: add in login check helper???
     const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
       include: [
         {
@@ -62,29 +62,18 @@ router.get("/blog/:id", async (req, res) => {
 // GET DASHBOARD - have to login to have dashboard
 router.get("/dashboard", withAuth, async (req, res) => {
   try {
-    // don't think this is actually necessary because we can use a helper here??
-    // so when we go to render to handlebars, a helper will run 1st to double check user login = true
-
-    if (!req.session.loggedIn) {
-      return res.redirect("/login");
-    }
     const dbDashboard = await BlogPosts.findAll({
-      where: {
-        user_id: req.session.userId, //TODO set up session.user obj in user routes
-      },
-
-      include: [
-        {
-          model: Users,
-          attributes: ["username"], // include username, date? tbd
-        },
-      ],
+      // where: {
+      //   user_id: req.session.userId, //TODO set up session.user obj in user routes
+      // },
     });
 
     const dashboard = dbDashboard.map((myPost) => myPost.get({ plain: true }));
     console.log(req.session.loggedIn);
     // Send over the 'loggedIn' session variable to the 'homepage' template
-    res.render("dashboard", { dashboard, loggedIn: req.session.loggedIn });
+    res.render("dashboard", {
+      blog: dashboard,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
