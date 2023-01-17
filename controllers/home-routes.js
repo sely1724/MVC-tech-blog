@@ -37,7 +37,11 @@ router.get("/blog/:id", async (req, res) => {
       include: [
         {
           model: Comments,
-          attributes: ["id", "user_id", "comment"],
+          attributes: ["id", "blog_post_id", "user_id", "comment"],
+          include: {
+            model: Users,
+            attributes: ["username"],
+          },
         },
         {
           model: Users,
@@ -46,6 +50,7 @@ router.get("/blog/:id", async (req, res) => {
       ],
     });
     const singlePost = dbSinglePost.get({ plain: true });
+    console.log(singlePost);
     //     // Send over the 'loggedIn' session variable to the 'homepage' template
     res.render("single-post", {
       blog: singlePost,
@@ -62,30 +67,54 @@ router.get("/blog/:id", async (req, res) => {
 // GET DASHBOARD - have to login to have dashboard
 router.get("/dashboard", withAuth, async (req, res) => {
   try {
-    const userData = await BlogPosts.findAll({
+    const dbUserData = await Users.findOne({
       where: {
-        user_id: req.session.userId,
+        id: req.session.userId,
       },
-      attributes: ["id", "title", "notes"],
-
       include: [
-        // {
-        //   model: Comments,
-        //   attributes: ["id", "blog_post_id", "user_id", "comment"],
-        //   include: {
-        //     model: Users,
-        //     attributes: ["username"],
-        //   },
-        // },
         {
-          model: Users,
-          attributes: ["username"],
+          model: BlogPosts,
+          attributes: ["id", "title", "notes"],
         },
       ],
     });
-    const myPosts = userData.map((blog) => blog.get({ plain: true }));
+
+    const myUser = dbUserData.get({ plain: true });
+    console.log(myUser);
     res.render("dashboard", {
-      blogs: myPosts,
+      myUser,
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+// GET DASHBOARD - have to login to have dashboard
+router.get("/dashboard/myblog/:id", async (req, res) => {
+  try {
+    const userData = await BlogPosts.findByPk(req.params.id, {
+      include: [
+        {
+          model: Users,
+          attributes: ["id", "username"],
+        },
+        {
+          model: Comments,
+          attributes: ["id", "blog_post_id", "user_id", "comment"],
+          include: {
+            model: Users,
+            attributes: ["username"],
+          },
+        },
+      ],
+    });
+
+    const myPosts = userData.get({ plain: true });
+    console.log(myPosts);
+    res.render("personal-post", {
+      blog: myPosts,
       loggedIn: req.session.loggedIn,
     });
   } catch (err) {

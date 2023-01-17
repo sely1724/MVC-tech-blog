@@ -1,17 +1,29 @@
 <section class="container">
-  <h3 class="title">{{BlogPost.title}}</h3>
-  <h4>Notes: {{BlogPost.notes}}</h4>
-  <!-- If the user is logged in, render the gallery content -->
   {{#if loggedIn}}
+  <h3 class="title">{{blog.title}}</h3>
+  <h4>Notes: {{blog.notes}}</h4>
+  <h4>Written By: {{blog.username}}</h4>
   <section class="flex-row justify-center">
-    {{!-- {{#each BlogPost.comments as |comment|}}
+    {{#each blog.Comments as |comment|}}
     {{> comment-details}}
-    {{/each}} --}}
+    {{/each}} 
+  </section>
+  <section>
+  <form class="form comment-form">
+      <div class="form-group">
+        <label for="comment-section">Add Comment:</label>
+        <input class="form-input" type="text" id="user-comment" />
+      </div>
+      <div class="form-group">
+        <button id = "comment" class="btn btn-primary" type="submit" value="{{blog.id}}">Enter</button>
+      </div>
+    </form>
 
-    <p> is it working??!</p>
   </section>
 </section>
 <!-- Otherwise, provide a link to login -->
 {{else}}
 <a href="/login" >You must login to view an individual post</a> 
 {{/if}}
+
+<script src="/js/comment.js"></script>

@@ -1,5 +1,5 @@
 <section class="container">
-  <h3 class="title">{{username}}'s Dashboard</h3>
+  <h3 class="title">{{myUser.username}}'s Dashboard</h3>
   
 
   <h4>Post a Blog</h4>
@@ -17,35 +17,17 @@
   </section>
 
 
-{{#if blogs.length}}
+{{#if myUser.BlogPosts.length}}
 <section>
   <div class="col-md-6 blog-list">
     <h3>All Your Blogs:</h3>
 
-{{#each blogs as |blog|}}
-{{> blog-details }}
+{{#each myUser.BlogPosts as |blog|}}
+{{> personal-post-details }}
 {{/each}}
   </div>
 {{/if}}
 </section>
-
-
-
-</section>
-
-<script src="/js/dashboard.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

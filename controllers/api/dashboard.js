@@ -16,34 +16,34 @@ router.post("/post", withAuth, async (req, res) => {
   }
 });
 
-// // create a new category
-// router.post("/", async (req, res) => {
+// get single personal post (shows delete/update button)
+// router.get("/post/:id", async (req, res) => {
 //   try {
-//     const newCategory = Category.create({
-//       //id not needed because auto-increment.
-//       category_name: req.body.category_name,
+//     const dbSinglePost = await BlogPosts.findByPk(req.params.id, {
+//       where: {
+//         id: req.params.id,
+//       },
+//       include: [
+//         {
+//           model: Users,
+//           attributes: ["id", "username"],
+//         },
+//       ], //eventually include COMMENTS
 //     });
-//     res.status(200).json(newCategory);
+//     console.log(dbSinglePost);
+//     const singlePost = dbSinglePost.get({ plain: true });
+//     //     // Send over the 'loggedIn' session variable to the 'homepage' template
+//     res.render("personal-post", {
+//       blog: singlePost,
+//       loggedIn: req.session.loggedIn,
+//       //       // loggedIn: req.session.loggedIn,
+//       //       // pass thru comments too?
+//     });
 //   } catch (err) {
-//     res.status(400).json(err);
+//     console.log(err);
+//     res.status(500).json(err);
 //   }
 // });
-
-// get single post
-router.get("/:id", async (req, res) => {
-  try {
-    const singlePost = await BlogPosts.findByPk(req.params.id, {
-      where: {
-        id: req.params.id,
-      },
-      include: [Users], //eventually include COMMENTS
-    });
-
-    res.status(200).json(singlePost);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 // router.put("/:id", async (req, res) => {
 //   try {
