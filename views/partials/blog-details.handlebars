@@ -1,7 +1,8 @@
 <section class = "card">
   <a href="/blog/{{id}}">
     <header>{{title}}</header>
-    <p>written by: </p>
+    <p>written by:{{User.username}}</p>
+    <p>created at: {{format_date createdAt}}</p>
     <div>
     </div>
   </a>

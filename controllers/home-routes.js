@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
 
     const blogDisplay = blogData.map((blog) => blog.get({ plain: true }));
     // Send blogDisplay information to the 'homepage' template
+    console.log(blogDisplay);
     res.render("homepage", {
       blogs: blogDisplay,
       loggedIn: req.session.loggedIn,
